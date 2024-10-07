@@ -24,7 +24,7 @@ x = radius * np.cos(theta)
 y = radius * np.sin(theta)
 
 df = pd.DataFrame({
-    "xx": x,
+    "x": x,
     "y": y,
     "idx": indices,
     "rand": np.random.randn(num_points),
