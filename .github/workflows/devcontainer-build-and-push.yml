@@ -3,33 +3,34 @@ name: Dev Container Build and Push Image
 on:
   workflow_dispatch:
   push:
-    branches:
-      - "main"
-    tags:
-      - "v*.*.*"
-    pull_requests:
-      branches:
-        - "main"
+    branches: ["main"]
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: ["main"]
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    # 권한 설정 추가
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-    -
-      name: Checkout
-      id: checkout
-      uses: actions/checkout@v1
-    -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+      - name: Checkout
+        uses: actions/checkout@v4 # 최신 버전 사용
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3 # 최신 버전 사용
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-    -
-        name: Pre-build dev container image
-        uses: devcontainers/ci@v0.2
+          password: ${{ secrets.GITHUB_TOKEN }} # 기본 토큰 사용
+
+      - name: Pre-build dev container image
+        uses: devcontainers/ci@v0.3
         with:
-          subFolder: .github
+          # .devcontainer 폴더가 프로젝트 루트에 있다면 '.'으로 수정
           imageName: ghcr.io/${{ github.repository }}
-          cacheFrom: ghcr.io/${{ github.repository }}
+          # 대문자가 포함된 경우 오류가 날 수 있으니 소문자 변환 권장 (생략 가능)
           push: always
