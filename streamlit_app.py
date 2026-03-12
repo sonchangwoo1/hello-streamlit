@@ -85,6 +85,24 @@ GAME_HTML = """
       padding: 10px 12px;
     }
 
+    #meta-panel {
+      left: 14px;
+      bottom: 52px;
+      width: 420px;
+      padding: 10px 12px;
+      max-height: 355px;
+      overflow: auto;
+    }
+
+    #ranking-panel {
+      right: 14px;
+      bottom: 52px;
+      width: 320px;
+      padding: 10px 12px;
+      max-height: 355px;
+      overflow: auto;
+    }
+
     #hint {
       position: absolute;
       left: 50%;
@@ -190,6 +208,148 @@ GAME_HTML = """
       font-weight: 700;
     }
 
+    .meta-title {
+      margin: 0 0 8px;
+      font-size: 12px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #9cc7ff;
+    }
+
+    .meta-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin: 5px 0;
+      color: #cce0ff;
+    }
+
+    .meta-line span {
+      color: #9cb5d8;
+    }
+
+    .pilot-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .pilot-row input {
+      flex: 1;
+      border-radius: 8px;
+      border: 1px solid rgba(130, 170, 236, 0.4);
+      background: rgba(8, 14, 25, 0.9);
+      color: #f0f6ff;
+      padding: 6px 8px;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .mini-btn {
+      border-radius: 8px;
+      border: 1px solid rgba(125, 214, 185, 0.65);
+      background: linear-gradient(180deg, #42dc98, #1fae72);
+      color: #052013;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 9px;
+      cursor: pointer;
+    }
+
+    .mini-btn:disabled {
+      background: rgba(74, 99, 124, 0.5);
+      border-color: rgba(113, 134, 155, 0.45);
+      color: #9eb2c7;
+      cursor: not-allowed;
+    }
+
+    .contract-list {
+      margin-top: 8px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .contract-item {
+      border: 1px solid rgba(124, 154, 211, 0.35);
+      border-radius: 8px;
+      background: rgba(10, 20, 35, 0.65);
+      padding: 6px 7px;
+      font-size: 11px;
+    }
+
+    .contract-item.done {
+      border-color: rgba(103, 218, 173, 0.58);
+      background: rgba(16, 37, 31, 0.67);
+    }
+
+    .contract-top {
+      display: flex;
+      justify-content: space-between;
+      color: #dcecff;
+      margin-bottom: 3px;
+      gap: 8px;
+    }
+
+    .contract-progress {
+      color: #8ec8ff;
+    }
+
+    .upgrade-board {
+      margin-top: 8px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .upgrade-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      border: 1px solid rgba(121, 153, 212, 0.33);
+      border-radius: 8px;
+      background: rgba(9, 18, 32, 0.72);
+      padding: 7px;
+      align-items: center;
+    }
+
+    .upgrade-item .name {
+      color: #def0ff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .upgrade-item .desc {
+      color: #9cb7da;
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .rank-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      border-radius: 7px;
+      border: 1px solid rgba(119, 148, 205, 0.35);
+      background: rgba(9, 17, 31, 0.66);
+      padding: 6px 7px;
+    }
+
+    .rank-item strong {
+      color: #eaf5ff;
+    }
+
+    .rank-item .sub {
+      color: #9ebbe1;
+      font-size: 10px;
+    }
+
     .overlay {
       position: absolute;
       inset: 0;
@@ -289,10 +449,30 @@ GAME_HTML = """
       </div>
     </div>
 
+    <div id="meta-panel" class="panel">
+      <div class="meta-title">Persistent Lab (Auto Save)</div>
+      <div class="pilot-row">
+        <input id="pilot-input" type="text" maxlength="16" placeholder="Pilot name" />
+        <button class="mini-btn" id="pilot-save-btn">SAVE</button>
+      </div>
+      <div class="meta-line"><span>Shards</span><strong id="shard-text">0</strong></div>
+      <div class="meta-line"><span>Runs</span><strong id="runs-text">0</strong></div>
+      <div class="meta-line"><span>Best Run</span><strong id="best-run-text">0</strong></div>
+      <div class="meta-line"><span>Lifetime Score</span><strong id="lifetime-score-text">0</strong></div>
+      <div class="meta-line"><span>Checkpoint</span><strong id="checkpoint-text">-</strong></div>
+      <div id="contract-list" class="contract-list"></div>
+      <div id="upgrade-board" class="upgrade-board"></div>
+    </div>
+
+    <div id="ranking-panel" class="panel">
+      <div class="meta-title">Season Ranking (Local)</div>
+      <div id="ranking-list" class="rank-list"></div>
+    </div>
+
     <div id="event-banner">Ready</div>
 
     <div id="hint">
-      Move: Mouse or WASD | Dash: Space | Bio Pulse: E | Restart after defeat: R
+      Move: Mouse or WASD | Dash: Space | Bio Pulse: E | Restart after defeat: R | Save + Ranking + Upgrades enabled
     </div>
 
     <div id="start" class="overlay">
@@ -307,6 +487,7 @@ GAME_HTML = """
           <li>Four enemy archetypes with different pressure profiles.</li>
           <li>Specialization from nutrient choices: Speedster / Predator / Tank / Hybrid.</li>
           <li>Skill expression with dash invulnerability and timed bio pulse.</li>
+          <li>Persistent Lab: upgrade with shards, clear daily contracts, and climb local season ranking.</li>
         </ul>
         <button class="cta" id="start-btn">START BATTLE (ENTER)</button>
       </div>
@@ -349,6 +530,25 @@ GAME_HTML = """
       const comboText = document.getElementById('combo-text');
       const enemyCountText = document.getElementById('enemy-count-text');
       const directorText = document.getElementById('director-text');
+      const pilotInput = document.getElementById('pilot-input');
+      const pilotSaveBtn = document.getElementById('pilot-save-btn');
+      const shardText = document.getElementById('shard-text');
+      const runsText = document.getElementById('runs-text');
+      const bestRunText = document.getElementById('best-run-text');
+      const lifetimeScoreText = document.getElementById('lifetime-score-text');
+      const checkpointText = document.getElementById('checkpoint-text');
+      const contractList = document.getElementById('contract-list');
+      const upgradeBoard = document.getElementById('upgrade-board');
+      const rankingList = document.getElementById('ranking-list');
+
+      const SAVE_KEY = 'evolio_hyper_arena_save_v2';
+      const SAVE_VERSION = 2;
+      const UPGRADE_DEFS = [
+        { id: 'core', name: 'Cytoplasm Core', desc: 'Attack +8% / level', baseCost: 45, max: 12 },
+        { id: 'shell', name: 'Membrane Shell', desc: 'Max HP +10%, Armor +2.5 / level', baseCost: 50, max: 12 },
+        { id: 'reactor', name: 'ATP Reactor', desc: 'Energy regen +10%, cooldowns shorter', baseCost: 55, max: 10 },
+        { id: 'hunter', name: 'Hunter Genome', desc: 'Score +6%, shard gain +8% / level', baseCost: 60, max: 10 }
+      ];
 
       const SPEC_COLOR = {
         Hybrid: '#55f1b1',
@@ -374,6 +574,159 @@ GAME_HTML = """
       let announceTimer = 0;
       let announceText = '';
 
+      function safeReadStorage() {
+        try {
+          return window.localStorage.getItem(SAVE_KEY);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function safeWriteStorage(value) {
+        try {
+          window.localStorage.setItem(SAVE_KEY, value);
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function todayKey() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function buildContracts(day) {
+        const hashSeed = day.split('-').join('');
+        const seedNum = Number(hashSeed) || 20260101;
+        const rotA = (seedNum % 3);
+        const rotB = ((Math.floor(seedNum / 7)) % 3);
+        const waveGoal = 4 + rotA;
+        const killGoal = 45 + rotB * 20;
+        const nutrientGoal = 95 + rotA * 30;
+        return [
+          { id: 'kill', title: 'Predator Census', target: killGoal, reward: 70 + rotA * 20, progress: 0, done: false },
+          { id: 'wave', title: 'Tidal Escalation', target: waveGoal, reward: 90 + rotB * 15, progress: 0, done: false },
+          { id: 'nutrient', title: 'Nutrient Hoarder', target: nutrientGoal, reward: 80 + rotB * 18, progress: 0, done: false }
+        ];
+      }
+
+      function defaultMetaSave() {
+        return {
+          version: SAVE_VERSION,
+          pilot: 'CellPilot',
+          shards: 0,
+          upgrades: { core: 0, shell: 0, reactor: 0, hunter: 0 },
+          stats: {
+            runs: 0,
+            totalScore: 0,
+            totalKills: 0,
+            totalNutrients: 0,
+            totalPlaySec: 0,
+            bestScore: 0,
+            bestWave: 1,
+            bestStage: 1,
+            bestMass: 110
+          },
+          rankings: [],
+          contracts: {
+            day: todayKey(),
+            items: buildContracts(todayKey())
+          },
+          activeSession: null,
+          lastRun: null
+        };
+      }
+
+      function ensureContracts(metaObj) {
+        if (!metaObj.contracts || metaObj.contracts.day !== todayKey()) {
+          metaObj.contracts = {
+            day: todayKey(),
+            items: buildContracts(todayKey())
+          };
+        }
+      }
+
+      function normalizeMeta(raw) {
+        const d = defaultMetaSave();
+        const src = raw && typeof raw === 'object' ? raw : {};
+        const out = {
+          version: SAVE_VERSION,
+          pilot: typeof src.pilot === 'string' && src.pilot.trim() ? src.pilot.slice(0, 16) : d.pilot,
+          shards: Number.isFinite(src.shards) ? Math.max(0, Math.floor(src.shards)) : d.shards,
+          upgrades: {
+            core: Math.max(0, Math.min(12, Math.floor(src.upgrades?.core || 0))),
+            shell: Math.max(0, Math.min(12, Math.floor(src.upgrades?.shell || 0))),
+            reactor: Math.max(0, Math.min(10, Math.floor(src.upgrades?.reactor || 0))),
+            hunter: Math.max(0, Math.min(10, Math.floor(src.upgrades?.hunter || 0)))
+          },
+          stats: {
+            runs: Math.max(0, Math.floor(src.stats?.runs || 0)),
+            totalScore: Math.max(0, Math.floor(src.stats?.totalScore || 0)),
+            totalKills: Math.max(0, Math.floor(src.stats?.totalKills || 0)),
+            totalNutrients: Math.max(0, Math.floor(src.stats?.totalNutrients || 0)),
+            totalPlaySec: Math.max(0, Math.floor(src.stats?.totalPlaySec || 0)),
+            bestScore: Math.max(0, Math.floor(src.stats?.bestScore || 0)),
+            bestWave: Math.max(1, Math.floor(src.stats?.bestWave || 1)),
+            bestStage: Math.max(1, Math.floor(src.stats?.bestStage || 1)),
+            bestMass: Math.max(110, Math.floor(src.stats?.bestMass || 110))
+          },
+          rankings: Array.isArray(src.rankings)
+            ? src.rankings.slice(0, 40).map((r) => ({
+              pilot: typeof r?.pilot === 'string' && r.pilot ? r.pilot.slice(0, 16) : 'Pilot',
+              score: Math.max(0, Math.floor(r?.score || 0)),
+              wave: Math.max(1, Math.floor(r?.wave || 1)),
+              stage: Math.max(1, Math.floor(r?.stage || 1)),
+              mass: Math.max(0, Math.floor(r?.mass || 0)),
+              spec: typeof r?.spec === 'string' ? r.spec : 'Hybrid',
+              kills: Math.max(0, Math.floor(r?.kills || 0)),
+              duration: Math.max(1, Math.floor(r?.duration || 1)),
+              shards: Math.max(0, Math.floor(r?.shards || 0)),
+              date: typeof r?.date === 'string' ? r.date : new Date().toISOString()
+            }))
+            : [],
+          contracts: src.contracts,
+          activeSession: src.activeSession && typeof src.activeSession === 'object' ? src.activeSession : null,
+          lastRun: src.lastRun && typeof src.lastRun === 'object' ? src.lastRun : null
+        };
+        ensureContracts(out);
+        return out;
+      }
+
+      function loadMetaSave() {
+        const raw = safeReadStorage();
+        if (!raw) return defaultMetaSave();
+        try {
+          const parsed = JSON.parse(raw);
+          return normalizeMeta(parsed);
+        } catch (error) {
+          return defaultMetaSave();
+        }
+      }
+
+      function persistMetaSave() {
+        safeWriteStorage(JSON.stringify(meta));
+      }
+
+      function fmtNumber(value) {
+        return Number(value || 0).toLocaleString();
+      }
+
+      function shortSpec(spec) {
+        if (spec === 'Speedster') return 'SPD';
+        if (spec === 'Predator') return 'PRED';
+        if (spec === 'Tank') return 'TANK';
+        return 'HYB';
+      }
+
+      function formatDate(isoString) {
+        if (!isoString) return '-';
+        const d = new Date(isoString);
+        if (Number.isNaN(d.getTime())) return '-';
+        return d.toISOString().slice(5, 10);
+      }
+
+      let meta = loadMetaSave();
+
       const state = {
         score: 0,
         time: 0,
@@ -390,7 +743,16 @@ GAME_HTML = """
         nutrients: [],
         enemies: [],
         enemyProjectiles: [],
-        playerProjectiles: []
+        playerProjectiles: [],
+        saveTick: 0,
+        runStats: {
+          kills: 0,
+          nutrients: 0,
+          elites: 0,
+          damageTaken: 0,
+          highestCombo: 0,
+          contractShardBonus: 0
+        }
       };
 
       const player = {
@@ -429,6 +791,202 @@ GAME_HTML = """
         shield: 0,
         lastDamageAt: 0
       };
+
+      function upgradeCost(def, level) {
+        return Math.round(def.baseCost * Math.pow(1.62, level + 0.05));
+      }
+
+      function scoreMetaMultiplier() {
+        return 1 + meta.upgrades.hunter * 0.06;
+      }
+
+      function shardMetaMultiplier() {
+        return 1 + meta.upgrades.hunter * 0.08;
+      }
+
+      function renderRankingBoard() {
+        if (!rankingList) return;
+        const list = Array.isArray(meta.rankings) ? meta.rankings : [];
+        if (!list.length) {
+          rankingList.innerHTML = '<div class="rank-item"><strong>No runs yet</strong><span class="sub">Start your first run</span></div>';
+          return;
+        }
+
+        rankingList.innerHTML = '';
+        list.slice(0, 8).forEach((r, idx) => {
+          const item = document.createElement('div');
+          item.className = 'rank-item';
+          const left = document.createElement('div');
+          const pilotName = (r.pilot || 'Pilot').slice(0, 12);
+          left.innerHTML = '<strong>#' + (idx + 1) + ' ' + fmtNumber(r.score) + '</strong><div class="sub">' + pilotName + ' · W' + r.wave + ' · S' + r.stage + ' · ' + shortSpec(r.spec) + '</div>';
+          const right = document.createElement('div');
+          right.className = 'sub';
+          right.textContent = formatDate(r.date);
+          item.appendChild(left);
+          item.appendChild(right);
+          rankingList.appendChild(item);
+        });
+      }
+
+      function renderContractBoard() {
+        if (!contractList) return;
+        ensureContracts(meta);
+        contractList.innerHTML = '';
+        meta.contracts.items.forEach((c) => {
+          const item = document.createElement('div');
+          item.className = 'contract-item' + (c.done ? ' done' : '');
+          const progress = Math.min(c.target, Math.floor(c.progress || 0));
+          item.innerHTML = ''
+            + '<div class="contract-top"><span>' + c.title + '</span><strong>+' + c.reward + ' shards</strong></div>'
+            + '<div class="contract-progress">' + progress + ' / ' + c.target + (c.done ? ' · completed' : '') + '</div>';
+          contractList.appendChild(item);
+        });
+      }
+
+      function renderUpgradeBoard() {
+        if (!upgradeBoard) return;
+        upgradeBoard.innerHTML = '';
+        UPGRADE_DEFS.forEach((def) => {
+          const current = meta.upgrades[def.id] || 0;
+          const atMax = current >= def.max;
+          const cost = atMax ? 0 : upgradeCost(def, current);
+
+          const row = document.createElement('div');
+          row.className = 'upgrade-item';
+
+          const left = document.createElement('div');
+          left.innerHTML = ''
+            + '<div class="name">' + def.name + ' Lv.' + current + ' / ' + def.max + '</div>'
+            + '<div class="desc">' + def.desc + '</div>';
+
+          const btn = document.createElement('button');
+          btn.className = 'mini-btn';
+          btn.disabled = atMax || meta.shards < cost;
+          btn.textContent = atMax ? 'MAX' : ('UP ' + cost);
+          btn.addEventListener('click', () => {
+            if (running) {
+              showBanner('Upgrade between runs only', 1.2);
+              return;
+            }
+            const nowLevel = meta.upgrades[def.id] || 0;
+            if (nowLevel >= def.max) return;
+            const nowCost = upgradeCost(def, nowLevel);
+            if (meta.shards < nowCost) {
+              showBanner('Not enough shards', 1.1);
+              return;
+            }
+            meta.shards -= nowCost;
+            meta.upgrades[def.id] = nowLevel + 1;
+            persistMetaSave();
+            rebuildPlayerStats();
+            renderMetaPanels();
+            showBanner(def.name + ' upgraded', 1.2);
+          });
+
+          row.appendChild(left);
+          row.appendChild(btn);
+          upgradeBoard.appendChild(row);
+        });
+      }
+
+      function renderMetaPanels() {
+        shardText.textContent = fmtNumber(meta.shards);
+        runsText.textContent = fmtNumber(meta.stats.runs);
+        bestRunText.textContent = fmtNumber(meta.stats.bestScore) + ' (W' + meta.stats.bestWave + ')';
+        lifetimeScoreText.textContent = fmtNumber(meta.stats.totalScore);
+        if (checkpointText) {
+          if (meta.activeSession && meta.activeSession.wave) {
+            checkpointText.textContent = 'W' + meta.activeSession.wave + ' · ' + fmtNumber(meta.activeSession.score);
+          } else {
+            checkpointText.textContent = '-';
+          }
+        }
+        if (pilotInput && document.activeElement !== pilotInput) {
+          pilotInput.value = meta.pilot;
+        }
+        renderContractBoard();
+        renderUpgradeBoard();
+        renderRankingBoard();
+      }
+
+      function applyContractProgress(contractId, amount, useMax = false) {
+        ensureContracts(meta);
+        const contract = meta.contracts.items.find((it) => it.id === contractId);
+        if (!contract || contract.done) return;
+
+        if (useMax) {
+          contract.progress = Math.max(contract.progress || 0, amount);
+        } else {
+          contract.progress = (contract.progress || 0) + amount;
+        }
+
+        if (contract.progress >= contract.target) {
+          contract.done = true;
+          contract.progress = contract.target;
+          meta.shards += contract.reward;
+          state.runStats.contractShardBonus += contract.reward;
+          showBanner('Contract complete: +' + contract.reward + ' shards', 1.6);
+          spawnBurst(player.x, player.y, '#7df3be', 26, 1.0);
+        }
+
+        persistMetaSave();
+        renderContractBoard();
+        shardText.textContent = fmtNumber(meta.shards);
+      }
+
+      function recordRunResult() {
+        const score = Math.floor(state.score);
+        const wave = state.wave;
+        const stage = player.stage;
+        const mass = Math.floor(player.mass);
+        const duration = Math.max(1, Math.floor(state.time));
+        const killCount = state.runStats.kills;
+
+        const baseShard = Math.max(
+          12,
+          Math.floor(score / 240 + wave * 5 + stage * 4 + killCount * 0.4)
+        );
+        const shardGain = Math.floor(baseShard * shardMetaMultiplier());
+        meta.shards += shardGain;
+
+        meta.stats.runs += 1;
+        meta.stats.totalScore += score;
+        meta.stats.totalKills += killCount;
+        meta.stats.totalNutrients += state.runStats.nutrients;
+        meta.stats.totalPlaySec += duration;
+        meta.stats.bestScore = Math.max(meta.stats.bestScore, score);
+        meta.stats.bestWave = Math.max(meta.stats.bestWave, wave);
+        meta.stats.bestStage = Math.max(meta.stats.bestStage, stage);
+        meta.stats.bestMass = Math.max(meta.stats.bestMass, mass);
+
+        const row = {
+          pilot: meta.pilot,
+          score,
+          wave,
+          stage,
+          mass,
+          spec: player.specialization,
+          kills: killCount,
+          duration,
+          shards: shardGain + state.runStats.contractShardBonus,
+          date: new Date().toISOString()
+        };
+
+        meta.rankings.push(row);
+        meta.rankings.sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          if (b.wave !== a.wave) return b.wave - a.wave;
+          return b.stage - a.stage;
+        });
+        meta.rankings = meta.rankings.slice(0, 40);
+        meta.lastRun = row;
+        meta.activeSession = null;
+
+        persistMetaSave();
+        renderMetaPanels();
+
+        return row;
+      }
 
       function clamp(v, lo, hi) {
         return Math.max(lo, Math.min(hi, v));
@@ -568,6 +1126,22 @@ GAME_HTML = """
           energyRegen *= 1.1;
           lifeSteal += 0.015;
         }
+
+        const coreLv = meta.upgrades.core || 0;
+        const shellLv = meta.upgrades.shell || 0;
+        const reactorLv = meta.upgrades.reactor || 0;
+        attack *= 1 + coreLv * 0.08;
+        maxHp *= 1 + shellLv * 0.1;
+        armor += shellLv * 2.5;
+        energyRegen *= 1 + reactorLv * 0.1;
+        speed *= 1 + reactorLv * 0.015;
+        dashCooldown *= Math.pow(0.96, reactorLv);
+        pulseCooldown *= Math.pow(0.95, reactorLv);
+
+        const veteranTier = Math.min(0.25, (meta.stats.runs || 0) * 0.0022);
+        attack *= 1 + veteranTier * 0.55;
+        maxHp *= 1 + veteranTier * 0.7;
+        energyRegen *= 1 + veteranTier * 0.4;
 
         const oldMax = player.maxHp;
         player.maxHp = Math.round(maxHp);
@@ -755,6 +1329,13 @@ GAME_HTML = """
         state.spawnTimer = 0;
         state.shake = 0;
         state.killsRecent.length = 0;
+        state.saveTick = 0;
+        state.runStats.kills = 0;
+        state.runStats.nutrients = 0;
+        state.runStats.elites = 0;
+        state.runStats.damageTaken = 0;
+        state.runStats.highestCombo = 0;
+        state.runStats.contractShardBonus = 0;
         ambientDropTimer = 0;
         announceTimer = 0;
         hideBanner();
@@ -797,7 +1378,15 @@ GAME_HTML = """
       }
 
       function startRun() {
+        ensureContracts(meta);
         resetRun();
+        meta.activeSession = {
+          startedAt: new Date().toISOString(),
+          score: 0,
+          wave: 1,
+          stage: 1
+        };
+        persistMetaSave();
         startOverlay.style.display = 'none';
         gameOverOverlay.style.display = 'none';
         running = true;
@@ -812,11 +1401,13 @@ GAME_HTML = """
       function endRun() {
         running = false;
         gameOver = true;
+        const run = recordRunResult();
         finalLine.textContent =
-          'Score: ' + Math.floor(state.score) +
-          ' | Wave: ' + state.wave +
-          ' | Stage: ' + player.stage +
-          ' | Spec: ' + player.specialization;
+          'Score: ' + fmtNumber(run.score) +
+          ' | Wave: ' + run.wave +
+          ' | Stage: ' + run.stage +
+          ' | Spec: ' + run.spec +
+          ' | Shards +' + fmtNumber(run.shards);
         gameOverOverlay.style.display = 'flex';
       }
 
@@ -887,6 +1478,7 @@ GAME_HTML = """
         }
         if (damage > 0) {
           player.hp -= damage;
+          state.runStats.damageTaken += damage;
           player.lastDamageAt = state.time;
           state.shake = Math.max(state.shake, 6);
           spawnBurst(player.x, player.y, '#ff8f8f', 8, 0.5);
@@ -964,9 +1556,13 @@ GAME_HTML = """
           state.combo = 1;
         }
         state.comboTimer = 3.8;
+        state.runStats.highestCombo = Math.max(state.runStats.highestCombo, state.combo);
+        state.runStats.kills += 1;
+        if (enemy.elite) state.runStats.elites += 1;
+        applyContractProgress('kill', 1, false);
 
         const comboMult = 1 + state.combo * 0.07;
-        const scoreGain = Math.round((enemy.maxHp * 0.23 + 14) * comboMult);
+        const scoreGain = Math.round((enemy.maxHp * 0.23 + 14) * comboMult * scoreMetaMultiplier());
         state.score += scoreGain;
         player.mass += 5 + enemy.radius * 0.82;
         player.hp = Math.min(player.maxHp, player.hp + enemy.maxHp * 0.03 * player.stats.lifeSteal);
@@ -1010,7 +1606,9 @@ GAME_HTML = """
           player.hp = Math.min(player.maxHp, player.hp + 6);
         }
         player.mass += massGain;
-        state.score += Math.round((5 + massGain) * (1 + state.combo * 0.05));
+        state.runStats.nutrients += 1;
+        applyContractProgress('nutrient', 1, false);
+        state.score += Math.round((5 + massGain) * (1 + state.combo * 0.05) * scoreMetaMultiplier());
         state.particles.push({
           x: n.x, y: n.y, vx: rand(-45, 45), vy: rand(-65, -15),
           r: 2.2, life: 0.5, maxLife: 1, color: '#e6f4ff'
@@ -1051,6 +1649,7 @@ GAME_HTML = """
         state.waveTime += dt;
         if (state.waveTime >= 34) {
           state.wave += 1;
+          applyContractProgress('wave', state.wave, true);
           state.waveTime = 0;
           player.hp = Math.min(player.maxHp, player.hp + player.maxHp * 0.18);
           player.energy = Math.min(player.maxEnergy, player.energy + 30);
@@ -1341,6 +1940,21 @@ GAME_HTML = """
         updateProjectiles(dt);
         updateNutrients(dt);
         updateVisualEffects(dt);
+
+        state.saveTick += dt;
+        if (state.saveTick >= 8) {
+          state.saveTick = 0;
+          meta.activeSession = {
+            startedAt: meta.activeSession?.startedAt || new Date().toISOString(),
+            score: Math.floor(state.score),
+            wave: state.wave,
+            stage: player.stage
+          };
+          persistMetaSave();
+          if (checkpointText) {
+            checkpointText.textContent = 'W' + state.wave + ' · ' + fmtNumber(Math.floor(state.score));
+          }
+        }
 
         camera.x += (player.x - camera.x) * clamp(dt * 5.5, 0, 1);
         camera.y += (player.y - camera.y) * clamp(dt * 5.5, 0, 1);
@@ -1635,6 +2249,24 @@ GAME_HTML = """
 
         startBtn.addEventListener('click', startRun);
         restartBtn.addEventListener('click', startRun);
+
+        pilotSaveBtn.addEventListener('click', () => {
+          const nextName = (pilotInput.value || '').trim().slice(0, 16);
+          if (!nextName) {
+            showBanner('Pilot name cannot be empty', 1.1);
+            return;
+          }
+          meta.pilot = nextName;
+          persistMetaSave();
+          renderMetaPanels();
+          showBanner('Pilot profile saved', 1.0);
+        });
+        pilotInput.addEventListener('keydown', (e) => {
+          if (e.code === 'Enter') {
+            e.preventDefault();
+            pilotSaveBtn.click();
+          }
+        });
       }
 
       function drawIdleScreen() {
@@ -1643,6 +2275,10 @@ GAME_HTML = """
       }
 
       bindInput();
+      renderMetaPanels();
+      if (meta.activeSession && meta.activeSession.wave) {
+        showBanner('Checkpoint detected: W' + meta.activeSession.wave + ' · ' + fmtNumber(meta.activeSession.score), 2.4);
+      }
       resetRun();
       drawIdleScreen();
     })();
